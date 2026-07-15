@@ -41,6 +41,11 @@ svg.icon{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;fill:none;}
 .generate-btn{background:var(--dark);color:#fff;}
 .generate-btn:disabled{opacity:.4;cursor:not-allowed;filter:none;}
 
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);

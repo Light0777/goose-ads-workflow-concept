@@ -140,7 +140,7 @@ export default function Home() {
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [chatMessages, progress])
+  }, [chatMessages])
 
   return (
     <div>
@@ -293,7 +293,7 @@ export default function Home() {
       {mode !== 'browse' && (
         <div style={{
           flex:1,display:'flex',flexDirection:'column',
-          padding:'24px 24px 200px 24px',maxWidth:800,margin:'0 auto',
+          padding:'24px 24px 24px 24px',maxWidth:800,margin:'0 auto',
           width:'100%',gap:16,overflowY:'auto'
         }}>
           {chatMessages.map((msg, i) => (
@@ -325,11 +325,35 @@ export default function Home() {
               {msg.image && (
                 <div style={{
                   borderRadius:14,overflow:'hidden',border:'1px solid var(--border)',
-                  maxWidth:400,width:'100%'
+                  maxWidth:400,width:'100%',position:'relative'
                 }}>
                   <img src={msg.image} alt={msg.label || ''} style={{width:'100%',height:'auto',display:'block'}} />
-                  <div style={{padding:'8px 12px',fontSize:12,color:'var(--text-dim)',background:'var(--panel)'}}>
-                    {msg.label}
+                  <div style={{
+                    position:'absolute',bottom:10,right:10,
+                    display:'flex',gap:6
+                  }}>
+                    <button style={{
+                      width:40,height:40,borderRadius:'50%',
+                      display:'flex',alignItems:'center',justifyContent:'center',
+                      border:'1px solid rgba(255,255,255,0.5)',
+                      background:'rgba(255,255,255,0.75)',
+                      backdropFilter:'blur(8px)',
+                      boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                      color:'var(--text)',cursor:'pointer',padding:0
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    </button>
+                    <button style={{
+                      width:40,height:40,borderRadius:'50%',
+                      display:'flex',alignItems:'center',justifyContent:'center',
+                      border:'1px solid rgba(255,255,255,0.5)',
+                      background:'rgba(255,255,255,0.75)',
+                      backdropFilter:'blur(8px)',
+                      boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                      color:'var(--text)',cursor:'pointer',padding:0
+                    }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+                    </button>
                   </div>
                 </div>
               )}
@@ -338,7 +362,7 @@ export default function Home() {
 
           {mode === 'generating' && (
             <div style={{
-              display:'flex',flexDirection:'column',gap:8,alignItems:'flex-start',width:'100%'
+              display:'flex',flexDirection:'column',gap:12,alignItems:'flex-start',width:'100%'
             }}>
               <div style={{
                 padding:'12px 16px',borderRadius:16,
@@ -347,19 +371,35 @@ export default function Home() {
               }}>
                 {currentStatus ? currentStatus.text : 'Starting...'}
               </div>
+
               <div style={{
-                width:'100%',height:6,borderRadius:999,
-                background:'var(--panel-2)',overflow:'hidden'
+                borderRadius:14,overflow:'hidden',border:'1px solid var(--border)',
+                maxWidth:400,width:'100%',position:'relative'
               }}>
                 <div style={{
-                  height:'100%',borderRadius:999,
-                  background:'var(--accent)',
-                  width:`${progress}%`,
-                  transition:'width .2s ease'
-                }} />
-              </div>
-              <div style={{fontSize:12,color:'var(--text-faint)'}}>
-                {Math.round(progress)}%
+                  width:'100%',aspectRatio:'4/5',background:'#e0e0e0',
+                  display:'flex',alignItems:'center',justifyContent:'center',
+                  position:'relative',overflow:'hidden'
+                }}>
+                  <div style={{
+                    position:'absolute',inset:0,
+                    background:'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%)',
+                    backgroundSize:'200% 100%',
+                    animation:'shimmer 1.5s infinite'
+                  }} />
+                  <svg width="64" height="64" viewBox="0 0 64 64" style={{position:'relative',zIndex:1}}>
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#ccc" strokeWidth="5" />
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#1c1c1a" strokeWidth="5"
+                      strokeDasharray={`${2 * Math.PI * 28}`}
+                      strokeDashoffset={`${2 * Math.PI * 28 * (1 - progress / 100)}`}
+                      strokeLinecap="round" transform="rotate(-90 32 32)"
+                      style={{transition:'stroke-dashoffset .3s ease'}}
+                    />
+                    <text x="32" y="38" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1c1c1a">
+                      {Math.round(progress)}%
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
           )}
