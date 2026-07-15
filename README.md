@@ -10,6 +10,7 @@ This project reimagines the [Gooseworks Ads](https://make.gooseworks.ai/) creati
 
 | Area | Detail |
 |------|--------|
+| **Generate Flow** | Full chat-style generation view with image thumbnails, prompt display, circular progress ring, shimmer placeholder animations, and Download/Share actions |
 | **History Sidebar** | Hamburger-menu sidebar giving easy access to prior generations; clicking loads a history entry back into the chat view |
 
 ### Tech Stack
