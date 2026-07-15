@@ -29,6 +29,14 @@ const GENERATED_ADS = [
 
 const FILTERS = ['All','Clean','Premium','Photo','Minimalist','Bold','Calm','Modern','Software','Energetic','Warm','Wellness','3d','Professional','Editorial']
 
+const HISTORY_ITEMS = [
+  { id: 1, selectedIds: [2, 4], prompt: 'make an ad for me use these templates', generatedUri: 'https://picsum.photos/seed/h1/600/750', generatedLabel: 'Variant A – Bold + Premium', timestamp: '2 min ago' },
+  { id: 2, selectedIds: [0, 6], prompt: 'modern dark theme for tech product', generatedUri: 'https://picsum.photos/seed/h2/600/750', generatedLabel: 'Variant B – Dark Tech', timestamp: '15 min ago' },
+  { id: 3, selectedIds: [10, 11], prompt: 'warm wellness vibes', generatedUri: 'https://picsum.photos/seed/h3/600/750', generatedLabel: 'Variant C – Wellness', timestamp: '1 hour ago' },
+  { id: 4, selectedIds: [8], prompt: 'showcase the software ui in a clean way', generatedUri: 'https://picsum.photos/seed/h4/600/750', generatedLabel: 'Variant D – Software UI', timestamp: '3 hours ago' },
+  { id: 5, selectedIds: [3, 7, 12], prompt: 'photo + 3d combo for premium feel', generatedUri: 'https://picsum.photos/seed/h5/600/750', generatedLabel: 'Variant E – Premium', timestamp: 'yesterday' },
+]
+
 type Message = {
   role: 'user' | 'assistant'
   text: string
@@ -63,6 +71,7 @@ export default function Home() {
   const [mode, setMode] = useState<'browse' | 'generating' | 'complete'>('browse')
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [progress, setProgress] = useState(0)
+  const [historyOpen, setHistoryOpen] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
@@ -129,6 +138,15 @@ export default function Home() {
     }
   }, [])
 
+  const loadHistoryItem = useCallback((item: typeof HISTORY_ITEMS[number]) => {
+    setChatMessages([
+      { role: 'user', text: item.prompt, selectedIds: item.selectedIds },
+      { role: 'assistant', text: 'Here are your generated ads. You can refine further or download below.', image: item.generatedUri, label: item.generatedLabel },
+    ])
+    setMode('complete')
+    setHistoryOpen(false)
+  }, [])
+
   const handleNewGeneration = useCallback(() => {
     setMode('browse')
     setChatMessages([])
@@ -144,6 +162,76 @@ export default function Home() {
 
   return (
     <div>
+      {historyOpen && (
+        <div onClick={() => setHistoryOpen(false)} style={{
+          position:'fixed',inset:0,background:'rgba(0,0,0,0.3)',zIndex:40
+        }} />
+      )}
+
+      <div style={{
+        position:'fixed',top:0,left:0,bottom:0,zIndex:50,
+        width:360,background:'var(--panel)',borderRight:'1px solid var(--border)',
+        boxShadow:'4px 0 24px rgba(0,0,0,0.1)',
+        transform: historyOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition:'transform .25s ease',
+        display:'flex',flexDirection:'column'
+      }}>
+        <div style={{
+          display:'flex',alignItems:'center',justifyContent:'space-between',
+          padding:'16px 18px',borderBottom:'1px solid var(--border-soft)'
+        }}>
+          <span style={{fontSize:15,fontWeight:600,color:'var(--text)'}}>Generate History</span>
+          <button onClick={() => setHistoryOpen(false)} style={{
+            width:28,height:28,borderRadius:'50%',border:'none',
+            background:'var(--panel-2)',cursor:'pointer',
+            display:'flex',alignItems:'center',justifyContent:'center',
+            color:'var(--text-dim)',fontSize:14
+          }}>✕</button>
+        </div>
+        <div style={{flex:1,overflowY:'auto',padding:'8px 0'}}>
+          {HISTORY_ITEMS.map(item => (
+            <div key={item.id} onClick={() => loadHistoryItem(item)} style={{
+              display:'flex',gap:12,padding:'12px 18px',cursor:'pointer',
+              borderBottom:'1px solid var(--border-soft)',
+              transition:'background .1s'
+            }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--panel-2)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:'flex',gap:4,marginBottom:6}}>
+                  {item.selectedIds.slice(0, 3).map(id => (
+                    <div key={id} style={{
+                      width:36,height:36,borderRadius:6,overflow:'hidden',
+                      border:'1px solid var(--border)',flex:'none'
+                    }}>
+                      <img src={IMAGES[id].uri} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                    </div>
+                  ))}
+                  {item.selectedIds.length > 3 && (
+                    <div style={{
+                      width:36,height:36,borderRadius:6,border:'1px solid var(--border)',
+                      display:'flex',alignItems:'center',justifyContent:'center',
+                      fontSize:11,color:'var(--text-faint)',background:'var(--panel-2)'
+                    }}>+{item.selectedIds.length - 3}</div>
+                  )}
+                </div>
+                <div style={{fontSize:13,color:'var(--text)',lineHeight:'1.3',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                  {item.prompt}
+                </div>
+                <div style={{fontSize:11,color:'var(--text-faint)',marginTop:3}}>{item.timestamp}</div>
+              </div>
+              <div style={{
+                width:64,height:64,borderRadius:8,overflow:'hidden',
+                border:'1px solid var(--border)',flex:'none'
+              }}>
+                <img src={item.generatedUri} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <header style={{
         display:'flex',alignItems:'center',justifyContent:'space-between',
         padding:'14px 24px',borderBottom:'1px solid var(--border-soft)',
@@ -176,6 +264,16 @@ export default function Home() {
         <>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 24px 0 24px',flexWrap:'wrap',gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+              <div onClick={() => setHistoryOpen(true)} style={{
+                width:36,height:36,borderRadius:'50%',
+                display:'flex',alignItems:'center',justifyContent:'center',
+                background:'var(--panel-2)',border:'1px solid var(--border)',
+                cursor:'pointer'
+              }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{color:'var(--text-dim)'}}>
+                  <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+              </div>
               <div style={{display:'flex',padding:3,borderRadius:999,border:'1px solid var(--border)',background:'var(--panel)'}}>
                 {(['images','videos'] as const).map(tab => (
                   <div key={tab}
