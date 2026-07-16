@@ -72,6 +72,7 @@ export default function Home() {
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [progress, setProgress] = useState(0)
   const [historyOpen, setHistoryOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
@@ -159,6 +160,8 @@ export default function Home() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatMessages])
+
+  useEffect(() => { setMounted(true) }, [])
 
   useLayoutEffect(() => {
     if (mode === 'browse') {
@@ -267,7 +270,7 @@ export default function Home() {
 
       <div className="app font-[family-name:var(--font-sans)]">
 
-      <div className={`browse-wrapper${mode !== 'browse' ? ' hidden' : ''}`}>
+      {mounted && <div className={`browse-wrapper${mode !== 'browse' ? ' hidden' : ''}`}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 24px 0 24px',flexWrap:'wrap',gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
               <div onClick={() => setHistoryOpen(true)} style={{
@@ -392,9 +395,9 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
 
-      <div className={`chat-wrapper${mode === 'browse' ? ' hidden' : ''}`}>
+      {mounted && <div className={`chat-wrapper${mode === 'browse' ? ' hidden' : ''}`}>
         <div style={{
           flex:1,display:'flex',flexDirection:'column',
           padding:'24px 24px 24px 24px',maxWidth:800,margin:'0 auto',
@@ -526,7 +529,7 @@ export default function Home() {
 
           <div ref={chatEndRef} />
         </div>
-      </div>
+      </div>}
 
       <div className="composer" style={{
         position:'fixed',bottom:0,left:0,right:0,zIndex:30,
