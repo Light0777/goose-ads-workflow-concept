@@ -3,21 +3,21 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 
 const IMAGES = [
-  { uri: 'https://placehold.co/400x500/EEE/333?text=Modern+Display', label: 'Modern Display' },
-  { uri: 'https://placehold.co/400x300/EEE/333?text=Clean+Promo', label: 'Clean Promo' },
-  { uri: 'https://placehold.co/400x600/EEE/333?text=Premium+Offer', label: 'Premium Offer' },
-  { uri: 'https://placehold.co/400x400/EEE/333?text=Photo+Banner', label: 'Photo Banner' },
-  { uri: 'https://placehold.co/400x350/EEE/333?text=Minimalist+Ad', label: 'Minimalist Ad' },
-  { uri: 'https://placehold.co/400x550/EEE/333?text=Bold+Headline', label: 'Bold Headline' },
-  { uri: 'https://placehold.co/400x480/EEE/333?text=Calm+Scene', label: 'Calm Scene' },
-  { uri: 'https://placehold.co/400x320/EEE/333?text=Tech+Launch', label: 'Tech Launch' },
-  { uri: 'https://placehold.co/400x520/EEE/333?text=Software+UI', label: 'Software UI' },
-  { uri: 'https://placehold.co/400x380/EEE/333?text=Energetic', label: 'Energetic' },
-  { uri: 'https://placehold.co/400x450/EEE/333?text=Warm+Tone', label: 'Warm Tone' },
-  { uri: 'https://placehold.co/400x420/EEE/333?text=Wellness', label: 'Wellness' },
-  { uri: 'https://placehold.co/400x500/EEE/333?text=3D+Render', label: '3D Render' },
-  { uri: 'https://placehold.co/400x340/EEE/333?text=Professional', label: 'Professional' },
-  { uri: 'https://placehold.co/400x460/EEE/333?text=Editorial', label: 'Editorial' },
+  { uri: 'https://picsum.photos/seed/ad1/400/500', label: 'Modern Display' },
+  { uri: 'https://picsum.photos/seed/ad2/400/300', label: 'Clean Promo' },
+  { uri: 'https://picsum.photos/seed/ad3/400/600', label: 'Premium Offer' },
+  { uri: 'https://picsum.photos/seed/ad4/400/400', label: 'Photo Banner' },
+  { uri: 'https://picsum.photos/seed/ad5/400/350', label: 'Minimalist Ad' },
+  { uri: 'https://picsum.photos/seed/ad6/400/550', label: 'Bold Headline' },
+  { uri: 'https://picsum.photos/seed/ad7/400/480', label: 'Calm Scene' },
+  { uri: 'https://picsum.photos/seed/ad8/400/320', label: 'Tech Launch' },
+  { uri: 'https://picsum.photos/seed/ad9/400/520', label: 'Software UI' },
+  { uri: 'https://picsum.photos/seed/ad10/400/380', label: 'Energetic' },
+  { uri: 'https://picsum.photos/seed/ad11/400/450', label: 'Warm Tone' },
+  { uri: 'https://picsum.photos/seed/ad12/400/420', label: 'Wellness' },
+  { uri: 'https://picsum.photos/seed/ad13/400/500', label: '3D Render' },
+  { uri: 'https://picsum.photos/seed/ad14/400/340', label: 'Professional' },
+  { uri: 'https://picsum.photos/seed/ad15/400/460', label: 'Editorial' },
 ]
 
 const GENERATED_ADS = [
