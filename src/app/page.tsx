@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 
 const IMAGES = [
   { uri: 'https://picsum.photos/seed/ad1/400/500', label: 'Modern Display' },
@@ -160,6 +160,13 @@ export default function Home() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chatMessages])
 
+  useLayoutEffect(() => {
+    if (mode === 'browse') {
+      const el = document.querySelector('.browse-wrapper') as HTMLElement | null
+      if (el) el.style.display = 'block'
+    }
+  }, [mode])
+
   return (
     <div>
       {historyOpen && (
@@ -260,7 +267,7 @@ export default function Home() {
 
       <div className="app font-[family-name:var(--font-sans)]">
 
-      <div style={{display: mode === 'browse' ? 'block' : 'none'}}>
+      <div className={`browse-wrapper${mode !== 'browse' ? ' hidden' : ''}`}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 24px 0 24px',flexWrap:'wrap',gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
               <div onClick={() => setHistoryOpen(true)} style={{
@@ -387,7 +394,7 @@ export default function Home() {
           </div>
         </div>
 
-      <div style={{display: mode === 'browse' ? 'none' : 'block'}}>
+      <div className={`chat-wrapper${mode === 'browse' ? ' hidden' : ''}`}>
         <div style={{
           flex:1,display:'flex',flexDirection:'column',
           padding:'24px 24px 24px 24px',maxWidth:800,margin:'0 auto',
