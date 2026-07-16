@@ -2,6 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 
+const IS_SERVER = typeof window === 'undefined'
+
 const IMAGES = [
   { uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=500&fit=crop&auto=format', label: 'Modern Display' },
   { uri: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop&auto=format', label: 'Clean Promo' },
@@ -270,7 +272,7 @@ export default function Home() {
 
       <div className="app font-[family-name:var(--font-sans)]">
 
-      {mounted && <div className={`browse-wrapper${mode !== 'browse' ? ' hidden' : ''}`}>
+      {!IS_SERVER && mounted && <div className={`browse-wrapper${mode !== 'browse' ? ' hidden' : ''}`}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 24px 0 24px',flexWrap:'wrap',gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
               <div onClick={() => setHistoryOpen(true)} style={{
@@ -397,7 +399,7 @@ export default function Home() {
           </div>
         </div>}
 
-      {mounted && <div className={`chat-wrapper${mode === 'browse' ? ' hidden' : ''}`}>
+      {!IS_SERVER && mounted && <div className={`chat-wrapper${mode === 'browse' ? ' hidden' : ''}`}>
         <div style={{
           flex:1,display:'flex',flexDirection:'column',
           padding:'24px 24px 24px 24px',maxWidth:800,margin:'0 auto',
