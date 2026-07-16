@@ -260,7 +260,7 @@ export default function Home() {
 
       <div className="app font-[family-name:var(--font-sans)]">
 
-      <div style={{display: mode === 'browse' ? '' : 'none'}}>
+      <div style={{display: mode === 'browse' ? 'block' : 'none'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'18px 24px 0 24px',flexWrap:'wrap',gap:12}}>
             <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
               <div onClick={() => setHistoryOpen(true)} style={{
@@ -347,7 +347,7 @@ export default function Home() {
 
           <div className="ad-grid" style={{padding:'14px 24px 0 24px'}}>
             <div style={{
-              breakInside:'avoid',marginBottom:14,borderRadius:14,
+              borderRadius:14,
               display:'flex',flexDirection:'column',alignItems:'center',
               justifyContent:'center',gap:10,padding:'40px 12px',
               height:340,cursor:'pointer',color:'var(--text-dim)'
@@ -363,7 +363,7 @@ export default function Home() {
                 className={`card ${selected.has(i) ? 'selected' : ''}`}
                 onClick={() => toggleSelect(i)}
                 style={{
-                  breakInside:'avoid',marginBottom:14,borderRadius:14,overflow:'hidden',
+                  borderRadius:14,overflow:'hidden',
                   position:'relative',cursor:'pointer',background:'var(--panel)'
                 }}
               >
@@ -387,7 +387,7 @@ export default function Home() {
           </div>
         </div>
 
-      <div style={{display: mode === 'browse' ? 'none' : ''}}>
+      <div style={{display: mode === 'browse' ? 'none' : 'block'}}>
         <div style={{
           flex:1,display:'flex',flexDirection:'column',
           padding:'24px 24px 24px 24px',maxWidth:800,margin:'0 auto',
