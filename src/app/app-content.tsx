@@ -3,38 +3,38 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 
 const IMAGES = [
-  { uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=500&fit=crop&auto=format', label: 'Modern Display' },
-  { uri: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop&auto=format', label: 'Clean Promo' },
-  { uri: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=400&h=600&fit=crop&auto=format', label: 'Premium Offer' },
-  { uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop&auto=format', label: 'Photo Banner' },
-  { uri: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=400&h=350&fit=crop&auto=format', label: 'Minimalist Ad' },
-  { uri: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=550&fit=crop&auto=format', label: 'Bold Headline' },
-  { uri: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=480&fit=crop&auto=format', label: 'Calm Scene' },
-  { uri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=320&fit=crop&auto=format', label: 'Tech Launch' },
-  { uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=520&fit=crop&auto=format', label: 'Software UI' },
-  { uri: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=400&h=380&fit=crop&auto=format', label: 'Energetic' },
-  { uri: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=450&fit=crop&auto=format', label: 'Warm Tone' },
-  { uri: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=420&fit=crop&auto=format', label: 'Wellness' },
-  { uri: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=500&fit=crop&auto=format', label: '3D Render' },
-  { uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=340&fit=crop&auto=format', label: 'Professional' },
-  { uri: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=460&fit=crop&auto=format', label: 'Editorial' },
+  { uri: '/assets/img1.jpg', label: 'Modern Display' },
+  { uri: '/assets/img2.jpg', label: 'Clean Promo' },
+  { uri: '/assets/img3.jpg', label: 'Premium Offer' },
+  { uri: '/assets/img4.jpg', label: 'Photo Banner' },
+  { uri: '/assets/img5.jpg', label: 'Minimalist Ad' },
+  { uri: '/assets/img6.jpg', label: 'Bold Headline' },
+  { uri: '/assets/img7.jpg', label: 'Calm Scene' },
+  { uri: '/assets/img8.jpg', label: 'Tech Launch' },
+  { uri: '/assets/img9.jpg', label: 'Software UI' },
+  { uri: '/assets/img10.jpg', label: 'Energetic' },
+  { uri: '/assets/img11.jpg', label: 'Warm Tone' },
+  { uri: '/assets/img12.jpg', label: 'Wellness' },
+  { uri: '/assets/img13.jpg', label: '3D Render' },
+  { uri: '/assets/img14.jpg', label: 'Professional' },
+  { uri: '/assets/img15.jpg', label: 'Editorial' },
 ]
 
 const GENERATED_ADS = [
-  { uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=750&fit=crop&auto=format', label: 'Variant A – Modern Display' },
-  { uri: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=750&fit=crop&auto=format', label: 'Variant B – Clean Promo' },
-  { uri: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=600&h=750&fit=crop&auto=format', label: 'Variant C – Bold Headline' },
-  { uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=750&fit=crop&auto=format', label: 'Variant D – Warm Tone' },
+  { uri: '/assets/img14.jpg', label: 'Variant A – Professional' },
+  { uri: '/assets/img15.jpg', label: 'Variant B – Editorial' },
+  { uri: '/assets/img16.jpg', label: 'Variant C – Bold Headline' },
+  { uri: '/assets/img17.jpg', label: 'Variant D – Warm Tone' },
 ]
 
 const FILTERS = ['All','Clean','Premium','Photo','Minimalist','Bold','Calm','Modern','Software','Energetic','Warm','Wellness','3d','Professional','Editorial']
 
 const HISTORY_ITEMS = [
-  { id: 1, selectedIds: [2, 4], prompt: 'make an ad for me use these templates', generatedUri: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant A – Bold + Premium', timestamp: '2 min ago' },
-  { id: 2, selectedIds: [0, 6], prompt: 'modern dark theme for tech product', generatedUri: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant B – Dark Tech', timestamp: '15 min ago' },
-  { id: 3, selectedIds: [10, 11], prompt: 'warm wellness vibes', generatedUri: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant C – Wellness', timestamp: '1 hour ago' },
-  { id: 4, selectedIds: [8], prompt: 'showcase the software ui in a clean way', generatedUri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant D – Software UI', timestamp: '3 hours ago' },
-  { id: 5, selectedIds: [3, 7, 12], prompt: 'photo + 3d combo for premium feel', generatedUri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant E – Premium', timestamp: 'yesterday' },
+  { id: 1, selectedIds: [2, 4], prompt: 'make an ad for me use these templates', generatedUri: '/assets/img16.jpg', generatedLabel: 'Variant A – Bold + Premium', timestamp: '2 min ago' },
+  { id: 2, selectedIds: [0, 6], prompt: 'modern dark theme for tech product', generatedUri: '/assets/img17.jpg', generatedLabel: 'Variant B – Dark Tech', timestamp: '15 min ago' },
+  { id: 3, selectedIds: [10, 11], prompt: 'warm wellness vibes', generatedUri: '/assets/img14.jpg', generatedLabel: 'Variant C – Wellness', timestamp: '1 hour ago' },
+  { id: 4, selectedIds: [8], prompt: 'showcase the software ui in a clean way', generatedUri: '/assets/img15.jpg', generatedLabel: 'Variant D – Software UI', timestamp: '3 hours ago' },
+  { id: 5, selectedIds: [3, 7, 12], prompt: 'photo + 3d combo for premium feel', generatedUri: '/assets/img16.jpg', generatedLabel: 'Variant E – Premium', timestamp: 'yesterday' },
 ]
 
 type Message = {
