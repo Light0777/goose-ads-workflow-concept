@@ -3,38 +3,38 @@
 import { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 
 const IMAGES = [
-  { uri: 'https://picsum.photos/seed/ad1/400/500', label: 'Modern Display' },
-  { uri: 'https://picsum.photos/seed/ad2/400/300', label: 'Clean Promo' },
-  { uri: 'https://picsum.photos/seed/ad3/400/600', label: 'Premium Offer' },
-  { uri: 'https://picsum.photos/seed/ad4/400/400', label: 'Photo Banner' },
-  { uri: 'https://picsum.photos/seed/ad5/400/350', label: 'Minimalist Ad' },
-  { uri: 'https://picsum.photos/seed/ad6/400/550', label: 'Bold Headline' },
-  { uri: 'https://picsum.photos/seed/ad7/400/480', label: 'Calm Scene' },
-  { uri: 'https://picsum.photos/seed/ad8/400/320', label: 'Tech Launch' },
-  { uri: 'https://picsum.photos/seed/ad9/400/520', label: 'Software UI' },
-  { uri: 'https://picsum.photos/seed/ad10/400/380', label: 'Energetic' },
-  { uri: 'https://picsum.photos/seed/ad11/400/450', label: 'Warm Tone' },
-  { uri: 'https://picsum.photos/seed/ad12/400/420', label: 'Wellness' },
-  { uri: 'https://picsum.photos/seed/ad13/400/500', label: '3D Render' },
-  { uri: 'https://picsum.photos/seed/ad14/400/340', label: 'Professional' },
-  { uri: 'https://picsum.photos/seed/ad15/400/460', label: 'Editorial' },
+  { uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=500&fit=crop&auto=format', label: 'Modern Display' },
+  { uri: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop&auto=format', label: 'Clean Promo' },
+  { uri: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=400&h=600&fit=crop&auto=format', label: 'Premium Offer' },
+  { uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop&auto=format', label: 'Photo Banner' },
+  { uri: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=400&h=350&fit=crop&auto=format', label: 'Minimalist Ad' },
+  { uri: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=550&fit=crop&auto=format', label: 'Bold Headline' },
+  { uri: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=480&fit=crop&auto=format', label: 'Calm Scene' },
+  { uri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=320&fit=crop&auto=format', label: 'Tech Launch' },
+  { uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=520&fit=crop&auto=format', label: 'Software UI' },
+  { uri: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=400&h=380&fit=crop&auto=format', label: 'Energetic' },
+  { uri: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&h=450&fit=crop&auto=format', label: 'Warm Tone' },
+  { uri: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=420&fit=crop&auto=format', label: 'Wellness' },
+  { uri: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=500&fit=crop&auto=format', label: '3D Render' },
+  { uri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=340&fit=crop&auto=format', label: 'Professional' },
+  { uri: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=460&fit=crop&auto=format', label: 'Editorial' },
 ]
 
 const GENERATED_ADS = [
-  { uri: 'https://picsum.photos/seed/gen1/600/750', label: 'Variant A – Modern Display' },
-  { uri: 'https://picsum.photos/seed/gen2/600/750', label: 'Variant B – Clean Promo' },
-  { uri: 'https://picsum.photos/seed/gen3/600/750', label: 'Variant C – Bold Headline' },
-  { uri: 'https://picsum.photos/seed/gen4/600/750', label: 'Variant D – Warm Tone' },
+  { uri: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=750&fit=crop&auto=format', label: 'Variant A – Modern Display' },
+  { uri: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&h=750&fit=crop&auto=format', label: 'Variant B – Clean Promo' },
+  { uri: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?w=600&h=750&fit=crop&auto=format', label: 'Variant C – Bold Headline' },
+  { uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=750&fit=crop&auto=format', label: 'Variant D – Warm Tone' },
 ]
 
 const FILTERS = ['All','Clean','Premium','Photo','Minimalist','Bold','Calm','Modern','Software','Energetic','Warm','Wellness','3d','Professional','Editorial']
 
 const HISTORY_ITEMS = [
-  { id: 1, selectedIds: [2, 4], prompt: 'make an ad for me use these templates', generatedUri: 'https://picsum.photos/seed/h1/600/750', generatedLabel: 'Variant A – Bold + Premium', timestamp: '2 min ago' },
-  { id: 2, selectedIds: [0, 6], prompt: 'modern dark theme for tech product', generatedUri: 'https://picsum.photos/seed/h2/600/750', generatedLabel: 'Variant B – Dark Tech', timestamp: '15 min ago' },
-  { id: 3, selectedIds: [10, 11], prompt: 'warm wellness vibes', generatedUri: 'https://picsum.photos/seed/h3/600/750', generatedLabel: 'Variant C – Wellness', timestamp: '1 hour ago' },
-  { id: 4, selectedIds: [8], prompt: 'showcase the software ui in a clean way', generatedUri: 'https://picsum.photos/seed/h4/600/750', generatedLabel: 'Variant D – Software UI', timestamp: '3 hours ago' },
-  { id: 5, selectedIds: [3, 7, 12], prompt: 'photo + 3d combo for premium feel', generatedUri: 'https://picsum.photos/seed/h5/600/750', generatedLabel: 'Variant E – Premium', timestamp: 'yesterday' },
+  { id: 1, selectedIds: [2, 4], prompt: 'make an ad for me use these templates', generatedUri: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant A – Bold + Premium', timestamp: '2 min ago' },
+  { id: 2, selectedIds: [0, 6], prompt: 'modern dark theme for tech product', generatedUri: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant B – Dark Tech', timestamp: '15 min ago' },
+  { id: 3, selectedIds: [10, 11], prompt: 'warm wellness vibes', generatedUri: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant C – Wellness', timestamp: '1 hour ago' },
+  { id: 4, selectedIds: [8], prompt: 'showcase the software ui in a clean way', generatedUri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant D – Software UI', timestamp: '3 hours ago' },
+  { id: 5, selectedIds: [3, 7, 12], prompt: 'photo + 3d combo for premium feel', generatedUri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&auto=format', generatedLabel: 'Variant E – Premium', timestamp: 'yesterday' },
 ]
 
 type Message = {
@@ -354,7 +354,7 @@ export default function Home() {
 
           <div className="ad-grid" style={{padding:'14px 24px 0 24px'}}>
             <div style={{
-              borderRadius:14,
+              breakInside:'avoid',marginBottom:14,borderRadius:14,
               display:'flex',flexDirection:'column',alignItems:'center',
               justifyContent:'center',gap:10,padding:'40px 12px',
               height:340,cursor:'pointer',color:'var(--text-dim)'
@@ -370,7 +370,7 @@ export default function Home() {
                 className={`card ${selected.has(i) ? 'selected' : ''}`}
                 onClick={() => toggleSelect(i)}
                 style={{
-                  borderRadius:14,overflow:'hidden',
+                  breakInside:'avoid',marginBottom:14,borderRadius:14,overflow:'hidden',
                   position:'relative',cursor:'pointer',background:'var(--panel)'
                 }}
               >
@@ -388,7 +388,7 @@ export default function Home() {
                 }}>
                   {selected.has(i) && <CheckIcon />}
                 </span>
-                <img src={item.uri} alt={`Ad example: ${item.label}`} loading="lazy" style={{display:'block',width:'100%',height:'auto'}} />
+                <img src={item.uri} alt={`Ad example: ${item.label}`} style={{display:'block',width:'100%',height:'auto'}} />
               </div>
             ))}
           </div>
